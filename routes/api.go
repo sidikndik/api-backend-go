@@ -2,12 +2,17 @@ package routes
 
 import (
 	"api-backend-go/handlers"
+	"api-backend-go/middleware"
 	"net/http"
 )
 
 
-func RouteApi(){
+func RouteApi() http.Handler{ 
 
-	http.NewServeMux()
-	http.HandleFunc("/",handlers.UserGet)
+	mux := http.NewServeMux()
+
+	finalHandler := http.HandlerFunc(handlers.UserGet)
+	mux.Handle("/", middleware.MiddlewareBacicAuth(finalHandler))
+
+	return mux
 }
