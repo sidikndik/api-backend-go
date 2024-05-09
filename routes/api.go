@@ -11,8 +11,7 @@ func RouteApi() http.Handler{
 
 	mux := http.NewServeMux()
 
-	finalHandler := http.HandlerFunc(handlers.UserGet)
-	mux.Handle("/", middleware.MiddlewareBacicAuth(finalHandler))
+	mux.Handle("/", middleware.MiddlewareBacicAuth(http.HandlerFunc(handlers.UserGet)))
 
 	return mux
 }
