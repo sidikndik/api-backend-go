@@ -5,8 +5,8 @@ import (
 )
 
 type Base struct{
-	ID string
-	CreatedAt time.Time
-	UpdateAt time.Time
-	DeletedAt time.Time
+	ID 			string
+	CreatedAt 	time.Time
+	UpdateAt 	time.Time
+	DeletedAt 	time.Time
 }
