@@ -11,7 +11,10 @@ func RouteApi() http.Handler{
 
 	mux := http.NewServeMux()
 
-	mux.Handle("/", middleware.MiddlewareBacicAuth(http.HandlerFunc(handlers.UserGet)))
+	mux.Handle("GET /user", middleware.MiddlewareBacicAuth(http.HandlerFunc(handlers.UserGet)))
+	mux.Handle("POST /user", middleware.MiddlewareBacicAuth(http.HandlerFunc(handlers.UserPost)))
+	mux.Handle("PUT /user/{id}", middleware.MiddlewareBacicAuth(http.HandlerFunc(handlers.UserPut)))
+	mux.Handle("DELETE /user", middleware.MiddlewareBacicAuth(http.HandlerFunc(handlers.UserDelete)))
 
 	return mux
 }
