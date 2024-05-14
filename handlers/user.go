@@ -24,13 +24,15 @@ func UserPost(w http.ResponseWriter, r *http.Request) {
 	db := database.DBConnect()
 	result := db.Create(user)
 
-	if nil != result.Error{
+	if result.RowsAffected < 0{
 		log.Fatal(result.Error)
-	}
 
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("gagal menyimpan data"))
+	}
 	
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("welcome user post"))
+	w.Write([]byte("created"))
 }
 
 func UserPut(w http.ResponseWriter, r *http.Request) {
