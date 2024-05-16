@@ -4,6 +4,7 @@ import (
 	"api-backend-go/database"
 	"api-backend-go/model"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 )
@@ -13,6 +14,7 @@ type Result struct {
 	Age  int
 }
 
+// get all user
 func UserGet(w http.ResponseWriter, r *http.Request) {
 	db := database.DBConnect()
 	var user []Result
@@ -34,35 +36,63 @@ func UserGet(w http.ResponseWriter, r *http.Request) {
 	w.Write(output)
 }
 
+// store data user
 func UserPost(w http.ResponseWriter, r *http.Request) {
 
-	user := new(model.User)
+	payload, _ := io.ReadAll(r.Body)
 
-	user.Name = "sidikndik"
-	user.Age = 12
-	user.Address = "semanan kalideres"
-	user.Phone = "+6283815698856"
+	data := []byte(payload)
+	user := new(model.User)
+	err := json.Unmarshal(data, &user)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("request gagal"))
+	}
 
 	db := database.DBConnect()
 	result := db.Create(user)
 
 	if result.RowsAffected < 0 {
 		log.Fatal(result.Error)
-
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("gagal menyimpan data"))
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("request gagal"))
 	}
 
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("created"))
 }
 
+// update dat user
 func UserPut(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	payload, _ := io.ReadAll(r.Body)
+	data := []byte(payload)
+
+	var user model.User
+
+	db := database.DBConnect()
+	db.First(&user, id)
+
+	err := json.Unmarshal(data, &user)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("request gagal"))
+	}
+
+	db.Save(&user)
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("welcome user update"))
+	w.Write([]byte("success updated"))
 }
 
+// delete data user
 func UserDelete(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	db := database.DBConnect()
+
+	db.Delete(&model.User{}, id)
+
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("welcome user delete"))
+	w.Write([]byte("deleted"))
 }
