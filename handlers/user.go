@@ -19,7 +19,7 @@ func UserGet(w http.ResponseWriter, r *http.Request) {
 	db := database.DBConnect()
 	var user []Result
 
-	result := db.Raw("SELECT name, age FROM users LIMIT 1").Scan(&user)
+	result := db.Raw("SELECT name, age FROM users").Scan(&user)
 	if result.Error != nil {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("data not found"))
