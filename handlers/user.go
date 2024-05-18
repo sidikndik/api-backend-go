@@ -77,7 +77,7 @@ func UserPut(w http.ResponseWriter, r *http.Request) {
 	err := json.Unmarshal(data, &user)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("request gagal"))
+		w.Write([]byte("request feild"))
 	}
 
 	db.Save(&user)
