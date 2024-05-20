@@ -8,17 +8,18 @@ import (
 	"net/http"
 	"os"
 )
-func init(){
+
+func init() {
 	config.Environment()
 }
 
-func main(){
+func main() {
 
 	mux := routes.RouteApi()
 
 	fmt.Println("Listening port 8080")
 	fmt.Println(os.Getenv("DATABASE_NAME"))
-	
-	log.Fatal(http.ListenAndServe(":8080", mux))
-}
 
+	log.Fatal(http.ListenAndServe(":8080", mux))
+
+}
