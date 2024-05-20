@@ -23,14 +23,14 @@ import (
 
 func DBConnect() *gorm.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=%s&loc=%s",
-	os.Getenv("DATABASE_USER"), 
-	os.Getenv("DATABASE_PASSWORD"), 
-	os.Getenv("DATABASE_HOST"), 
-	os.Getenv("DATABASE_PORT"), 
-	os.Getenv("DATABASE_NAME"), 
-	os.Getenv("DATABASE_CHARSET"), 
-	os.Getenv("DATABASE_PARSE_TIME"), 
-	os.Getenv("DATABASE_LOC"))
+		os.Getenv("DATABASE_USER"),
+		os.Getenv("DATABASE_PASSWORD"),
+		os.Getenv("DATABASE_HOST"),
+		os.Getenv("DATABASE_PORT"),
+		os.Getenv("DATABASE_NAME"),
+		os.Getenv("DATABASE_CHARSET"),
+		os.Getenv("DATABASE_PARSE_TIME"),
+		os.Getenv("DATABASE_LOC"))
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if nil != err {
